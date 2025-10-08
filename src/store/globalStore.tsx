@@ -15,7 +15,7 @@ type GlobalState = {
 };
 
 export const useGlobalStore = create(
-  persist<GlobalState | Partial<GlobalState>>(
+  persist<GlobalState>(
     (set, get) => ({
       user: null,
       todos: [],
@@ -55,7 +55,9 @@ export const useGlobalStore = create(
     {
       name: 'global-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ todos: state.todos }),
+      // A tipagem de persist em Zustand v5 espera GlobalState;
+      // usamos uma asserção apenas para fins de tipagem, persistindo somente `todos`.
+      partialize: (state) => ({ todos: state.todos }) as unknown as GlobalState,
     },
   ),
 );

@@ -28,7 +28,7 @@ Aplicação de lista de compras com estado global usando Zustand, construída co
 Exemplo de uso em componentes com seletores (melhor prática para evitar re-renders desnecessários):
 
 ```tsx
-import { useGlobalStore } from '@/store/globalStore';
+import { useGlobalStore } from '../store/globalStore';
 
 const todos = useGlobalStore((state) => state.todos);
 const addTodo = useGlobalStore((state) => state.addTodo);
@@ -91,6 +91,48 @@ partialize: (state) => ({ todos: state.todos, user: state.user })
 
 - Ações e Seletores: adicione novas ações no store e consuma sempre via seletor: `useGlobalStore((state) => state.minhaAcao)`.
 - Estilos: utilize `utils/cn.ts` para compor classes Tailwind com merge seguro.
+
+### Configuração do TailwindCSS (se ainda não estiver habilitado)
+
+O projeto já usa classes utilitárias do Tailwind nos componentes, mas caso você esteja iniciando do zero e não veja os estilos aplicados, configure o Tailwind rapidamente:
+
+- Crie `tailwind.config.js` na raiz:
+
+```js
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  theme: { extend: {} },
+  plugins: [],
+};
+```
+
+- Crie `postcss.config.js` na raiz:
+
+```js
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+};
+```
+
+- Crie `src/index.css` com:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+- Importe o CSS em `src/main.tsx`:
+
+```ts
+import './index.css';
+```
+
+Execute `npm run dev` e os estilos devem ser aplicados corretamente.
 
 ## Notas
 
